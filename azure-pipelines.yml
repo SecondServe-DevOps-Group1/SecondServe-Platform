@@ -65,11 +65,10 @@ stages:
     - task: Docker@2
       displayName: 'Push Backend Image to ACR'
       inputs:
-        repository: 'foodhawk-backend'
+        repository: '$(acrName).azurecr.io/foodhawk-backend'
         command: 'push'
         tags: |
           latest
-        containerRegistry: '$(azureSubscription)'
 
 # Deploy to Azure using Terraform
 - stage: Deploy
