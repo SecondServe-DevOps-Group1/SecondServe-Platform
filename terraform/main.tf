@@ -43,38 +43,35 @@ resource "azurerm_container_registry" "foodhawk_acr" {
     Environment = var.environment
   }
 }
-# Azure Database for PostgreSQL
-# Note: GP_Gen5_2 is a paid tier (~$50-100/month)
-resource "azurerm_postgresql_flexible_server" "foodhawk_db" {
-  name                   = "${var.project_name}-db-${random_string.suffix.result}"
-  resource_group_name    = azurerm_resource_group.foodhawk_rg.name
-  location               = azurerm_resource_group.foodhawk_rg.location
-  version                = "15"
-  administrator_login    = var.db_username
-  administrator_password = var.db_password
-
-  storage_mb                   = 32768
-  sku_name                     = "GP_Gen5_2"
-  backup_retention_days        = 7
-  geo_redundant_backup_enabled = false
+# Azure SQL Database (Free Tier available)
+# Note: Free tier may be available on Azure for Students
+resource "azurerm_mssql_server" "foodhawk_db" {
+  name                         = "${var.project_name}-db-${random_string.suffix.result}"
+  resource_group_name          = azurerm_resource_group.foodhawk_rg.name
+  location                     = azurerm_resource_group.foodhawk_rg.location
+  version                      = "12.0"
+  administrator_login          = var.db_username
+  administrator_login_password = var.db_password
 
   tags = {
     Environment = var.environment
   }
 }
 
-resource "azurerm_postgresql_flexible_server_database" "foodhawk_db" {
-  name      = "foodhawk"
-  server_id = azurerm_postgresql_flexible_server.foodhawk_db.id
-  charset   = "UTF8"
-  collation = "en_US_UTF8"
+resource "azurerm_mssql_database" "foodhawk_db" {
+  name           = "foodhawk"
+  server_id      = azurerm_mssql_server.foodhawk_db.id
+  collation      = "SQL_Latin1_General_CP1_CI_AS"
+  license_type   = "LicenseIncluded"
+  max_size_gb    = 2
+  sku_name       = "Basic"
 }
 
-resource "azurerm_postgresql_flexible_server_firewall_rule" "allow_azure_services" {
-  name                = "allow-azure-services"
-  server_id           = azurerm_postgresql_flexible_server.foodhawk_db.id
-  start_ip_address    = "0.0.0.0"
-  end_ip_address      = "0.0.0.0"
+resource "azurerm_mssql_firewall_rule" "allow_azure_services" {
+  name             = "allow-azure-services"
+  server_id        = azurerm_mssql_server.foodhawk_db.id
+  start_ip_address = "0.0.0.0"
+  end_ip_address   = "0.0.0.0"
 }
 
 # Azure App Service Plan (Free Tier F1)
@@ -108,7 +105,7 @@ resource "azurerm_linux_web_app" "backend" {
     "DOCKER_REGISTRY_SERVER_URL"      = "https://${azurerm_container_registry.foodhawk_acr.login_server}"
     "DOCKER_REGISTRY_SERVER_USERNAME" = azurerm_container_registry.foodhawk_acr.admin_username
     "DOCKER_REGISTRY_SERVER_PASSWORD" = azurerm_container_registry.foodhawk_acr.admin_password
-    "DATABASE_URL"                    = "postgresql://${var.db_username}:${var.db_password}@${azurerm_postgresql_flexible_server.foodhawk_db.fqdn}:5432/foodhawk"
+    "DATABASE_URL"                    = "mssql+pyodbc://${var.db_username}:${var.db_password}@${azurerm_mssql_server.foodhawk_db.fqdn}:1433/foodhawk?driver=ODBC+Driver+17+for+SQL+Server"
     "SECRET_KEY"                      = var.secret_key
     "JWT_ALGORITHM"                   = "HS256"
     "ACCESS_TOKEN_EXPIRE_MINUTES"     = "1440"

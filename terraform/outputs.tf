@@ -25,6 +25,6 @@ output "frontend_url" {
 }
 
 output "database_hostname" {
-  description = "Hostname of the PostgreSQL database"
-  value       = azurerm_postgresql_flexible_server.foodhawk_db.fqdn
+  description = "Hostname of the SQL database"
+  value       = azurerm_mssql_server.foodhawk_db.fqdn
 }
