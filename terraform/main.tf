@@ -43,9 +43,8 @@ resource "azurerm_container_registry" "foodhawk_acr" {
     Environment = var.environment
   }
 }
-
-# Azure Database for PostgreSQL (Free Tier - B1bs Burstable)
-# Note: Available free for 12 months with Azure Free Account
+# Azure Database for PostgreSQL
+# Note: GP_Gen5_2 is a paid tier (~$50-100/month)
 resource "azurerm_postgresql_flexible_server" "foodhawk_db" {
   name                   = "${var.project_name}-db-${random_string.suffix.result}"
   resource_group_name    = azurerm_resource_group.foodhawk_rg.name
@@ -54,9 +53,8 @@ resource "azurerm_postgresql_flexible_server" "foodhawk_db" {
   administrator_login    = var.db_username
   administrator_password = var.db_password
 
-  # B1s is available on Azure for Students
   storage_mb                   = 32768
-  sku_name                     = "B_Standard_B1s"
+  sku_name                     = "GP_Gen5_2"
   backup_retention_days        = 7
   geo_redundant_backup_enabled = false
 

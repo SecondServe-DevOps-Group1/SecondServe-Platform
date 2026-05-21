@@ -16,7 +16,6 @@ variable "environment" {
   default     = "production"
 }
 
-
 variable "db_username" {
   description = "Database username"
   type        = string
