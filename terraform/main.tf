@@ -54,9 +54,9 @@ resource "azurerm_postgresql_flexible_server" "foodhawk_db" {
   administrator_login    = var.db_username
   administrator_password = var.db_password
 
-  # B1bs is the cheapest tier, free for 12 months with Azure Free Account
+  # B1s is available on Azure for Students
   storage_mb                   = 32768
-  sku_name                     = "B_Standard_B1bs"
+  sku_name                     = "B_Standard_B1s"
   backup_retention_days        = 7
   geo_redundant_backup_enabled = false
 
