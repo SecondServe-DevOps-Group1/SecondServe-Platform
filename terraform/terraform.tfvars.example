@@ -1,7 +1,7 @@
 # Free Tier Azure Terraform Variables Example
 # Copy this file to terraform.tfvars and fill in your values
 
-azure_region  = "westus"
+azure_region  = "eastasia"
 project_name  = "foodhawk"
 environment   = "production"
 
