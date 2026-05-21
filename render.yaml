@@ -32,7 +32,7 @@ services:
         fromService:
           type: web
           name: foodhawk-backend
-          property: url
+          property: host
 
 databases:
   # PostgreSQL Database
