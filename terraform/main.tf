@@ -93,18 +93,20 @@ resource "azurerm_linux_web_app" "backend" {
   }
 }
 
-# Azure Static Web Apps (Free Tier for Frontend)
-# Free tier: Unlimited static sites, 100 GB bandwidth/month
-resource "azurerm_static_web_app" "frontend" {
+# Frontend Web App (React on Free Tier)
+resource "azurerm_linux_web_app" "frontend" {
   name                = "${var.project_name}-frontend-${random_string.suffix.result}"
-  resource_group_name = azurerm_resource_group.foodhawk_rg.name
   location            = azurerm_resource_group.foodhawk_rg.location
-  sku_tier             = "Free"
-  sku_size             = "Free"
+  resource_group_name = azurerm_resource_group.foodhawk_rg.name
+  service_plan_id     = azurerm_service_plan.foodhawk_app_plan.id
 
-  # For Static Web Apps, you typically deploy via GitHub Actions
-  # This creates the resource, but deployment is done via CI/CD
-  
+  # For now, use a simple nginx container for frontend
+  # TODO: Update to build and serve React app
+  site_config {
+    linux_fx_version = "DOCKER|nginx:latest"
+    always_on        = false
+  }
+
   tags = {
     Environment = var.environment
   }

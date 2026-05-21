@@ -20,6 +20,6 @@ output "backend_url" {
 }
 
 output "frontend_url" {
-  description = "URL of the frontend static web app"
-  value       = azurerm_static_web_app.frontend.default_host_name
+  description = "URL of the frontend web app"
+  value       = azurerm_linux_web_app.frontend.default_hostname
 }
