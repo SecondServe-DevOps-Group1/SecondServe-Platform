@@ -19,9 +19,16 @@ provider "azurerm" {
   features {}
 }
 
+# Random suffix for unique resource names (must be created before resource group)
+resource "random_string" "suffix" {
+  length  = 6
+  special = false
+  upper   = false
+}
+
 # Resource Group
 resource "azurerm_resource_group" "foodhawk_rg" {
-  name     = "${var.project_name}-${var.environment}-rg"
+  name     = "${var.project_name}-${var.environment}-${random_string.suffix.result}-rg"
   location = var.azure_region
 
   tags = {
@@ -101,11 +108,4 @@ resource "azurerm_static_web_app" "frontend" {
   tags = {
     Environment = var.environment
   }
-}
-
-# Random suffix for unique resource names
-resource "random_string" "suffix" {
-  length  = 6
-  special = false
-  upper   = false
 }
