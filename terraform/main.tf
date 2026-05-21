@@ -100,11 +100,9 @@ resource "azurerm_linux_web_app" "frontend" {
   resource_group_name = azurerm_resource_group.foodhawk_rg.name
   service_plan_id     = azurerm_service_plan.foodhawk_app_plan.id
 
-  # For now, use a simple nginx container for frontend
-  # TODO: Update to build and serve React app
+  # Use built-in nginx for now - will update to ACR image later
   site_config {
-    linux_fx_version = "DOCKER|nginx:latest"
-    always_on        = false
+    always_on = false
   }
 
   tags = {
