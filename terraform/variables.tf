@@ -16,14 +16,8 @@ variable "environment" {
   default     = "production"
 }
 
-variable "db_username" {
-  description = "Database username"
-  type        = string
-  sensitive   = true
-}
-
-variable "db_password" {
-  description = "Database password"
+variable "supabase_database_url" {
+  description = "Supabase database connection URL"
   type        = string
   sensitive   = true
 }

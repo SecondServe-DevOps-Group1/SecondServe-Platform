@@ -23,8 +23,3 @@ output "frontend_url" {
   description = "URL of the frontend static web app"
   value       = azurerm_static_web_app.frontend.default_host_name
 }
-
-output "database_hostname" {
-  description = "Hostname of the SQL database"
-  value       = azurerm_mssql_server.foodhawk_db.fqdn
-}

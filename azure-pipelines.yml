@@ -113,8 +113,7 @@ stages:
                   -var="azure_region=$(azureRegion)" \
                   -var="project_name=$(projectName)" \
                   -var="environment=$(environment)" \
-                  -var="db_username=$(dbUsername)" \
-                  -var="db_password=$(dbPassword)" \
+                  -var="supabase_database_url=$(supabaseDatabaseUrl)" \
                   -var="secret_key=$(secretKey)"
           
           - task: AzureCLI@2

@@ -5,9 +5,8 @@ azure_region  = "eastus"
 project_name  = "foodhawk"
 environment   = "production"
 
-# Database credentials
-db_username  = "foodhawkadmin"
-db_password  = "YourSecurePassword123!"
+# Supabase database URL (get from Supabase dashboard)
+supabase_database_url = "postgresql://postgres:[YOUR-PASSWORD]@db.[YOUR-PROJECT-REF].supabase.co:5432/postgres"
 
 # JWT secret key (generate a secure random string)
 secret_key   = "your-super-secret-jwt-key-change-this-in-production"
