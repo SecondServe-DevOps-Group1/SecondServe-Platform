@@ -59,11 +59,6 @@ resource "azurerm_postgresql_flexible_server" "foodhawk_db" {
   sku_name                     = "B_Standard_B1bs"
   backup_retention_days        = 7
   geo_redundant_backup_enabled = false
-  
-  # Auto-pause to save costs when not in use
-  auto_pause {
-    delay_in_minutes = 10
-  }
 
   tags = {
     Environment = var.environment
@@ -133,11 +128,8 @@ resource "azurerm_static_web_app" "frontend" {
   name                = "${var.project_name}-frontend-${random_string.suffix.result}"
   resource_group_name = azurerm_resource_group.foodhawk_rg.name
   location            = azurerm_resource_group.foodhawk_rg.location
-
-  sku {
-    tier = "Free"
-    name = "Free"
-  }
+  sku_tier             = "Free"
+  sku_size             = "Free"
 
   # For Static Web Apps, you typically deploy via GitHub Actions
   # This creates the resource, but deployment is done via CI/CD
