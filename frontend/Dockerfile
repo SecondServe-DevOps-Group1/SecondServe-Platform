@@ -22,6 +22,5 @@ EXPOSE 3000
 FROM nginx:alpine
 COPY --from=0 /app/build /usr/share/nginx/html
 COPY nginx.conf /etc/nginx/conf.d/default.conf.template
-RUN apk add --no-cache gettext
-CMD sh -c "envsubst '\$BACKEND_HOST' < /etc/nginx/conf.d/default.conf.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"
+CMD ["sh", "-c", "sed \"s|\\$BACKEND_HOST|\\${BACKEND_HOST:-foodhawk-backend}|g\" /etc/nginx/conf.d/default.conf.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"]
 EXPOSE 80
