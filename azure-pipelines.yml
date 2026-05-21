@@ -17,7 +17,7 @@ pr:
       - main
 
 variables:
-  azureRegion: 'eastus2'
+  azureRegion: 'westus'
   projectName: 'foodhawk'
   environment: 'production'
   dockerTag: '$(Build.BuildId)'
