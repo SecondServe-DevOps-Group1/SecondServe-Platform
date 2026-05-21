@@ -28,7 +28,7 @@ services:
     dockerContext: ./frontend
     dockerfilePath: ./frontend/Dockerfile
     envVars:
-      - key: VITE_API_URL
+      - key: BACKEND_HOST
         fromService:
           type: web
           name: foodhawk-backend
