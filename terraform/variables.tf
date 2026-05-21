@@ -1,7 +1,7 @@
-variable "aws_region" {
-  description = "AWS region for deployment"
+variable "azure_region" {
+  description = "Azure region for deployment"
   type        = string
-  default     = "us-east-1"
+  default     = "eastus"
 }
 
 variable "project_name" {
@@ -16,17 +16,6 @@ variable "environment" {
   default     = "production"
 }
 
-variable "backend_image" {
-  description = "Docker image for backend"
-  type        = string
-  default     = "foodhawk-backend:latest"
-}
-
-variable "frontend_image" {
-  description = "Docker image for frontend"
-  type        = string
-  default     = "foodhawk-frontend:latest"
-}
 
 variable "db_username" {
   description = "Database username"
